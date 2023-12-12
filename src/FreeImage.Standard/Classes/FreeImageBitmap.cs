@@ -37,8 +37,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
+// using System.Drawing;
+// using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
@@ -189,10 +189,10 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="newSize.Width"/> or <paramref name="newSize.Height"/> are less or equal zero.
         /// </exception>
-        public FreeImageBitmap(FreeImageBitmap original, Size newSize)
-            : this(original, newSize.Width, newSize.Height)
-        {
-        }
+        // public FreeImageBitmap(FreeImageBitmap original, Size newSize)
+        //     : this(original, newSize.Width, newSize.Height)
+        // {
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class
@@ -247,10 +247,10 @@ namespace FreeImageAPI
         /// <see cref="FreeImageBitmap"/>.
         /// </remarks>
         /// <exception cref="Exception">The operation failed.</exception>
-        public FreeImageBitmap(Image original)
-            : this(original as Bitmap)
-        {
-        }
+        // public FreeImageBitmap(Image original)
+        //     : this(original as Bitmap)
+        // {
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class
@@ -272,10 +272,10 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="newSize.Width"/> or <paramref name="newSize.Height"/> are less or equal zero.
         /// </exception>
-        public FreeImageBitmap(Image original, Size newSize)
-            : this(original as Bitmap, newSize.Width, newSize.Height)
-        {
-        }
+        // public FreeImageBitmap(Image original, Size newSize)
+        //     : this(original as Bitmap, newSize.Width, newSize.Height)
+        // {
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class
@@ -296,10 +296,10 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentNullException"><paramref name="original"/> is a null reference.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="width"/> or <paramref name="height"/> are less or equal zero.</exception>
-        public FreeImageBitmap(Image original, int width, int height)
-            : this(original as Bitmap, width, height)
-        {
-        }
+        // public FreeImageBitmap(Image original, int width, int height)
+        //     : this(original as Bitmap, width, height)
+        // {
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class
@@ -316,22 +316,22 @@ namespace FreeImageAPI
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="original"/> is a null reference.</exception>
         /// <exception cref="Exception">The operation failed.</exception>
-        public FreeImageBitmap(Bitmap original)
-        {
-            if (original == null)
-            {
-                throw new ArgumentNullException("original");
-            }
+        // public FreeImageBitmap(Bitmap original)
+        // {
+        //     if (original == null)
+        //     {
+        //         throw new ArgumentNullException("original");
+        //     }
 
-            dib = FreeImage.CreateFromBitmap(original, true);
-            if (dib.IsNull)
-            {
-                throw new FreeImageException(ErrorLoadingBitmap);
-            }
+        //     dib = FreeImage.CreateFromBitmap(original, true);
+        //     if (dib.IsNull)
+        //     {
+        //         throw new FreeImageException(ErrorLoadingBitmap);
+        //     }
 
-            originalFormat = FreeImage.GetFormat(original.RawFormat);
-            AddMemoryPressure();
-        }
+        //     originalFormat = FreeImage.GetFormat(original.RawFormat);
+        //     AddMemoryPressure();
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class
@@ -353,10 +353,10 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="newSize.Width"/> or <paramref name="newSize.Height"/> are less or equal zero.
         /// </exception>
-        public FreeImageBitmap(Bitmap original, Size newSize)
-            : this(original, newSize.Width, newSize.Height)
-        {
-        }
+        // public FreeImageBitmap(Bitmap original, Size newSize)
+        //     : this(original, newSize.Width, newSize.Height)
+        // {
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class
@@ -377,39 +377,39 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentNullException"><paramref name="original"/> is a null reference.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="width"/> or <paramref name="height"/> are less or equal zero.</exception>
-        public FreeImageBitmap(Bitmap original, int width, int height)
-        {
-            if (original == null)
-            {
-                throw new ArgumentNullException("original");
-            }
+        // public FreeImageBitmap(Bitmap original, int width, int height)
+        // {
+        //     if (original == null)
+        //     {
+        //         throw new ArgumentNullException("original");
+        //     }
 
-            if (width <= 0)
-            {
-                throw new ArgumentOutOfRangeException("width");
-            }
+        //     if (width <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("width");
+        //     }
 
-            if (height <= 0)
-            {
-                throw new ArgumentOutOfRangeException("height");
-            }
+        //     if (height <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("height");
+        //     }
 
-            FIBITMAP temp = FreeImage.CreateFromBitmap(original, true);
-            if (temp.IsNull)
-            {
-                throw new FreeImageException(ErrorLoadingBitmap);
-            }
+        //     FIBITMAP temp = FreeImage.CreateFromBitmap(original, true);
+        //     if (temp.IsNull)
+        //     {
+        //         throw new FreeImageException(ErrorLoadingBitmap);
+        //     }
 
-            dib = FreeImage.Rescale(temp, width, height, FREE_IMAGE_FILTER.FILTER_BICUBIC);
-            FreeImage.Unload(temp);
-            if (dib.IsNull)
-            {
-                throw new FreeImageException(ErrorLoadingBitmap);
-            }
+        //     dib = FreeImage.Rescale(temp, width, height, FREE_IMAGE_FILTER.FILTER_BICUBIC);
+        //     FreeImage.Unload(temp);
+        //     if (dib.IsNull)
+        //     {
+        //         throw new FreeImageException(ErrorLoadingBitmap);
+        //     }
 
-            originalFormat = FreeImage.GetFormat(original.RawFormat);
-            AddMemoryPressure();
-        }
+        //     originalFormat = FreeImage.GetFormat(original.RawFormat);
+        //     AddMemoryPressure();
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class
@@ -624,12 +624,12 @@ namespace FreeImageAPI
         /// <param name="g">The Graphics object that specifies the resolution for the new <see cref="FreeImageBitmap"/>.</param>
         /// <exception cref="Exception">The operation failed.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="g"/> is a null reference.</exception>
-        public FreeImageBitmap(int width, int height, Graphics g)
-            : this(width, height)
-        {
-            FreeImage.SetResolutionX(dib, (uint)g.DpiX);
-            FreeImage.SetResolutionY(dib, (uint)g.DpiY);
-        }
+        // public FreeImageBitmap(int width, int height, Graphics g)
+        //     : this(width, height)
+        // {
+        //     FreeImage.SetResolutionX(dib, (uint)g.DpiX);
+        //     FreeImage.SetResolutionY(dib, (uint)g.DpiY);
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class bases on the specified size and format.
@@ -649,33 +649,33 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentException"><paramref name="format"/> is invalid.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="width"/> or <paramref name="height"/> are less or equal zero.</exception>
-        public FreeImageBitmap(int width, int height, PixelFormat format)
-        {
-            if (width <= 0)
-            {
-                throw new ArgumentOutOfRangeException("width");
-            }
+        // public FreeImageBitmap(int width, int height, PixelFormat format)
+        // {
+        //     if (width <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("width");
+        //     }
 
-            if (height <= 0)
-            {
-                throw new ArgumentOutOfRangeException("height");
-            }
+        //     if (height <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("height");
+        //     }
 
-            uint bpp, redMask, greenMask, blueMask;
-            FREE_IMAGE_TYPE type;
-            if (!FreeImage.GetFormatParameters(format, out type, out bpp, out redMask, out greenMask, out blueMask))
-            {
-                throw new ArgumentException("format is invalid");
-            }
+        //     uint bpp, redMask, greenMask, blueMask;
+        //     FREE_IMAGE_TYPE type;
+        //     if (!FreeImage.GetFormatParameters(format, out type, out bpp, out redMask, out greenMask, out blueMask))
+        //     {
+        //         throw new ArgumentException("format is invalid");
+        //     }
 
-            dib = FreeImage.AllocateT(type, width, height, (int)bpp, redMask, greenMask, blueMask);
-            if (dib.IsNull)
-            {
-                throw new FreeImageException(ErrorCreatingBitmap);
-            }
+        //     dib = FreeImage.AllocateT(type, width, height, (int)bpp, redMask, greenMask, blueMask);
+        //     if (dib.IsNull)
+        //     {
+        //         throw new FreeImageException(ErrorCreatingBitmap);
+        //     }
 
-            AddMemoryPressure();
-        }
+        //     AddMemoryPressure();
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class bases on the specified size and type.
@@ -741,38 +741,38 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentException"><paramref name="format"/> is invalid.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="width"/> or <paramref name="height"/> are less or equal zero.</exception>
-        public FreeImageBitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0)
-        {
-            if (width <= 0)
-            {
-                throw new ArgumentOutOfRangeException("width");
-            }
+        // public FreeImageBitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0)
+        // {
+        //     if (width <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("width");
+        //     }
 
-            if (height <= 0)
-            {
-                throw new ArgumentOutOfRangeException("height");
-            }
+        //     if (height <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("height");
+        //     }
 
-            uint bpp, redMask, greenMask, blueMask;
-            FREE_IMAGE_TYPE type;
-            bool topDown = (stride > 0);
-            stride = (stride > 0) ? stride : (stride * -1);
+        //     uint bpp, redMask, greenMask, blueMask;
+        //     FREE_IMAGE_TYPE type;
+        //     bool topDown = (stride > 0);
+        //     stride = (stride > 0) ? stride : (stride * -1);
 
-            if (!FreeImage.GetFormatParameters(format, out type, out bpp, out redMask, out greenMask, out blueMask))
-            {
-                throw new ArgumentException("format is invalid.");
-            }
+        //     if (!FreeImage.GetFormatParameters(format, out type, out bpp, out redMask, out greenMask, out blueMask))
+        //     {
+        //         throw new ArgumentException("format is invalid.");
+        //     }
 
-            dib = FreeImage.ConvertFromRawBits(
-                scan0, type, width, height, stride, bpp, redMask, greenMask, blueMask, topDown);
+        //     dib = FreeImage.ConvertFromRawBits(
+        //         scan0, type, width, height, stride, bpp, redMask, greenMask, blueMask, topDown);
 
-            if (dib.IsNull)
-            {
-                throw new FreeImageException(ErrorCreatingBitmap);
-            }
+        //     if (dib.IsNull)
+        //     {
+        //         throw new FreeImageException(ErrorCreatingBitmap);
+        //     }
 
-            AddMemoryPressure();
-        }
+        //     AddMemoryPressure();
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class bases on the specified size,
@@ -800,43 +800,43 @@ namespace FreeImageAPI
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="width"/> or <paramref name="height"/> are less or equal zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="bits"/> is null</exception>
-        public FreeImageBitmap(int width, int height, int stride, PixelFormat format, byte[] bits)
-        {
-            if (width <= 0)
-            {
-                throw new ArgumentOutOfRangeException("width");
-            }
+        // public FreeImageBitmap(int width, int height, int stride, PixelFormat format, byte[] bits)
+        // {
+        //     if (width <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("width");
+        //     }
 
-            if (height <= 0)
-            {
-                throw new ArgumentOutOfRangeException("height");
-            }
+        //     if (height <= 0)
+        //     {
+        //         throw new ArgumentOutOfRangeException("height");
+        //     }
 
-            if (bits == null)
-            {
-                throw new ArgumentNullException("bits");
-            }
+        //     if (bits == null)
+        //     {
+        //         throw new ArgumentNullException("bits");
+        //     }
 
-            uint bpp, redMask, greenMask, blueMask;
-            FREE_IMAGE_TYPE type;
-            bool topDown = (stride > 0);
-            stride = (stride > 0) ? stride : (stride * -1);
+        //     uint bpp, redMask, greenMask, blueMask;
+        //     FREE_IMAGE_TYPE type;
+        //     bool topDown = (stride > 0);
+        //     stride = (stride > 0) ? stride : (stride * -1);
 
-            if (!FreeImage.GetFormatParameters(format, out type, out bpp, out redMask, out greenMask, out blueMask))
-            {
-                throw new ArgumentException("format is invalid.");
-            }
+        //     if (!FreeImage.GetFormatParameters(format, out type, out bpp, out redMask, out greenMask, out blueMask))
+        //     {
+        //         throw new ArgumentException("format is invalid.");
+        //     }
 
-            dib = FreeImage.ConvertFromRawBits(
-                bits, type, width, height, stride, bpp, redMask, greenMask, blueMask, topDown);
+        //     dib = FreeImage.ConvertFromRawBits(
+        //         bits, type, width, height, stride, bpp, redMask, greenMask, blueMask, topDown);
 
-            if (dib.IsNull)
-            {
-                throw new FreeImageException(ErrorCreatingBitmap);
-            }
+        //     if (dib.IsNull)
+        //     {
+        //         throw new FreeImageException(ErrorCreatingBitmap);
+        //     }
 
-            AddMemoryPressure();
-        }
+        //     AddMemoryPressure();
+        // }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeImageBitmap"/> class bases on the specified size,
@@ -998,10 +998,10 @@ namespace FreeImageAPI
         /// PixtureBox for example without having to call any
         /// conversion operations.
         /// </remarks>
-        public static explicit operator Bitmap(FreeImageBitmap value)
-        {
-            return value.ToBitmap();
-        }
+        // public static explicit operator Bitmap(FreeImageBitmap value)
+        // {
+        //     return value.ToBitmap();
+        // }
 
         /// <summary>
         /// Converts a <see cref="Bitmap"/> instance to a <see cref="FreeImageBitmap"/> instance.
@@ -1013,10 +1013,10 @@ namespace FreeImageAPI
         /// allows to create an instance on the fly to perform
         /// image processing operations and converting it back.
         /// </remarks>
-        public static explicit operator FreeImageBitmap(Bitmap value)
-        {
-            return new FreeImageBitmap(value);
-        }
+        // public static explicit operator FreeImageBitmap(Bitmap value)
+        // {
+        //     return new FreeImageBitmap(value);
+        // }
 
         /// <summary>
         /// Determines whether two specified <see cref="FreeImageBitmap"/> objects have the same value.
@@ -1447,106 +1447,106 @@ namespace FreeImageAPI
         /// <summary>
         /// Gets attribute flags for the pixel data of this <see cref="FreeImageBitmap"/>.
         /// </summary>
-        public unsafe int Flags
-        {
-            get
-            {
-                EnsureNotDisposed();
-                int result = 0;
-                byte alpha;
-                int cd = ColorDepth;
+        // public unsafe int Flags
+        // {
+        //     get
+        //     {
+        //         EnsureNotDisposed();
+        //         int result = 0;
+        //         byte alpha;
+        //         int cd = ColorDepth;
 
-                if ((cd == 32) || (FreeImage.GetTransparencyCount(dib) != 0))
-                {
-                    result += (int)ImageFlags.HasAlpha;
-                }
+        //         if ((cd == 32) || (FreeImage.GetTransparencyCount(dib) != 0))
+        //         {
+        //             result += (int)ImageFlags.HasAlpha;
+        //         }
 
-                if (cd == 32)
-                {
-                    uint width = FreeImage.GetWidth(dib);
-                    uint height = FreeImage.GetHeight(dib);
-                    for (int y = 0; y < height; y++)
-                    {
-                        RGBQUAD* scanline = (RGBQUAD*)FreeImage.GetScanLine(dib, y);
-                        for (int x = 0; x < width; x++)
-                        {
-                            alpha = scanline[x].Color.A;
-                            if (alpha != byte.MinValue && alpha != byte.MaxValue)
-                            {
-                                result += (int)ImageFlags.HasTranslucent;
-                                y = (int)height;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (FreeImage.GetTransparencyCount(dib) != 0)
-                {
-                    byte[] transTable = FreeImage.GetTransparencyTableEx(dib);
-                    for (int i = 0; i < transTable.Length; i++)
-                    {
-                        if (transTable[i] != byte.MinValue && transTable[i] != byte.MaxValue)
-                        {
-                            result += (int)ImageFlags.HasTranslucent;
-                            break;
-                        }
-                    }
-                }
+        //         if (cd == 32)
+        //         {
+        //             uint width = FreeImage.GetWidth(dib);
+        //             uint height = FreeImage.GetHeight(dib);
+        //             for (int y = 0; y < height; y++)
+        //             {
+        //                 RGBQUAD* scanline = (RGBQUAD*)FreeImage.GetScanLine(dib, y);
+        //                 for (int x = 0; x < width; x++)
+        //                 {
+        //                     alpha = scanline[x].Color.A;
+        //                     if (alpha != byte.MinValue && alpha != byte.MaxValue)
+        //                     {
+        //                         result += (int)ImageFlags.HasTranslucent;
+        //                         y = (int)height;
+        //                         break;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         else if (FreeImage.GetTransparencyCount(dib) != 0)
+        //         {
+        //             byte[] transTable = FreeImage.GetTransparencyTableEx(dib);
+        //             for (int i = 0; i < transTable.Length; i++)
+        //             {
+        //                 if (transTable[i] != byte.MinValue && transTable[i] != byte.MaxValue)
+        //                 {
+        //                     result += (int)ImageFlags.HasTranslucent;
+        //                     break;
+        //                 }
+        //             }
+        //         }
 
-                if (FreeImage.GetICCProfileEx(dib).IsCMYK)
-                {
-                    result += (int)ImageFlags.ColorSpaceCmyk;
-                }
-                else
-                {
-                    result += (int)ImageFlags.ColorSpaceRgb;
-                }
+        //         if (FreeImage.GetICCProfileEx(dib).IsCMYK)
+        //         {
+        //             result += (int)ImageFlags.ColorSpaceCmyk;
+        //         }
+        //         else
+        //         {
+        //             result += (int)ImageFlags.ColorSpaceRgb;
+        //         }
 
-                if (FreeImage.GetColorType(dib) == FREE_IMAGE_COLOR_TYPE.FIC_MINISBLACK ||
-                    FreeImage.GetColorType(dib) == FREE_IMAGE_COLOR_TYPE.FIC_MINISWHITE)
-                {
-                    result += (int)ImageFlags.ColorSpaceGray;
-                }
+        //         if (FreeImage.GetColorType(dib) == FREE_IMAGE_COLOR_TYPE.FIC_MINISBLACK ||
+        //             FreeImage.GetColorType(dib) == FREE_IMAGE_COLOR_TYPE.FIC_MINISWHITE)
+        //         {
+        //             result += (int)ImageFlags.ColorSpaceGray;
+        //         }
 
-                if (originalFormat == FREE_IMAGE_FORMAT.FIF_BMP ||
-                    originalFormat == FREE_IMAGE_FORMAT.FIF_FAXG3 ||
-                    originalFormat == FREE_IMAGE_FORMAT.FIF_ICO ||
-                    originalFormat == FREE_IMAGE_FORMAT.FIF_JPEG ||
-                    originalFormat == FREE_IMAGE_FORMAT.FIF_PCX ||
-                    originalFormat == FREE_IMAGE_FORMAT.FIF_PNG ||
-                    originalFormat == FREE_IMAGE_FORMAT.FIF_PSD ||
-                    originalFormat == FREE_IMAGE_FORMAT.FIF_TIFF)
-                {
-                    result += (int)ImageFlags.HasRealDpi;
-                }
+        //         if (originalFormat == FREE_IMAGE_FORMAT.FIF_BMP ||
+        //             originalFormat == FREE_IMAGE_FORMAT.FIF_FAXG3 ||
+        //             originalFormat == FREE_IMAGE_FORMAT.FIF_ICO ||
+        //             originalFormat == FREE_IMAGE_FORMAT.FIF_JPEG ||
+        //             originalFormat == FREE_IMAGE_FORMAT.FIF_PCX ||
+        //             originalFormat == FREE_IMAGE_FORMAT.FIF_PNG ||
+        //             originalFormat == FREE_IMAGE_FORMAT.FIF_PSD ||
+        //             originalFormat == FREE_IMAGE_FORMAT.FIF_TIFF)
+        //         {
+        //             result += (int)ImageFlags.HasRealDpi;
+        //         }
 
-                return result;
-            }
-        }
+        //         return result;
+        //     }
+        // }
 
         /// <summary>
         /// Gets the width and height of this <see cref="FreeImageBitmap"/>.
         /// </summary>
-        public SizeF PhysicalDimension
-        {
-            get
-            {
-                EnsureNotDisposed();
-                return new SizeF((float)FreeImage.GetWidth(dib), (float)FreeImage.GetHeight(dib));
-            }
-        }
+        // public SizeF PhysicalDimension
+        // {
+        //     get
+        //     {
+        //         EnsureNotDisposed();
+        //         return new SizeF((float)FreeImage.GetWidth(dib), (float)FreeImage.GetHeight(dib));
+        //     }
+        // }
 
         /// <summary>
         /// Gets the pixel format for this <see cref="FreeImageBitmap"/>.
         /// </summary>
-        public PixelFormat PixelFormat
-        {
-            get
-            {
-                EnsureNotDisposed();
-                return FreeImage.GetPixelFormat(dib);
-            }
-        }
+        // public PixelFormat PixelFormat
+        // {
+        //     get
+        //     {
+        //         EnsureNotDisposed();
+        //         return FreeImage.GetPixelFormat(dib);
+        //     }
+        // }
 
         /// <summary>
         /// Gets IDs of the property items stored in this <see cref="FreeImageBitmap"/>.
@@ -1574,55 +1574,55 @@ namespace FreeImageAPI
         /// <summary>
         /// Gets all the property items (pieces of metadata) stored in this <see cref="FreeImageBitmap"/>.
         /// </summary>
-        public PropertyItem[] PropertyItems
-        {
-            get
-            {
-                EnsureNotDisposed();
-                List<PropertyItem> list = new List<PropertyItem>();
-                ImageMetadata metaData = new ImageMetadata(dib, true);
+        // public PropertyItem[] PropertyItems
+        // {
+        //     get
+        //     {
+        //         EnsureNotDisposed();
+        //         List<PropertyItem> list = new List<PropertyItem>();
+        //         ImageMetadata metaData = new ImageMetadata(dib, true);
 
-                foreach (MetadataModel metadataModel in metaData)
-                {
-                    foreach (MetadataTag metadataTag in metadataModel)
-                    {
-                        list.Add(metadataTag.GetPropertyItem());
-                    }
-                }
+        //         foreach (MetadataModel metadataModel in metaData)
+        //         {
+        //             foreach (MetadataTag metadataTag in metadataModel)
+        //             {
+        //                 list.Add(metadataTag.GetPropertyItem());
+        //             }
+        //         }
 
-                return list.ToArray();
-            }
-        }
+        //         return list.ToArray();
+        //     }
+        // }
 
         /// <summary>
         /// Gets the format of this <see cref="FreeImageBitmap"/>.
         /// </summary>
-        public ImageFormat RawFormat
-        {
-            get
-            {
-                EnsureNotDisposed();
-                Attribute guidAttribute =
-                    Attribute.GetCustomAttribute(
-                        typeof(FreeImageBitmap), typeof(System.Runtime.InteropServices.GuidAttribute)
-                    );
-                return (guidAttribute == null) ?
-                    null :
-                    new ImageFormat(new Guid(((GuidAttribute)guidAttribute).Value));
-            }
-        }
+        // public ImageFormat RawFormat
+        // {
+        //     get
+        //     {
+        //         EnsureNotDisposed();
+        //         Attribute guidAttribute =
+        //             Attribute.GetCustomAttribute(
+        //                 typeof(FreeImageBitmap), typeof(System.Runtime.InteropServices.GuidAttribute)
+        //             );
+        //         return (guidAttribute == null) ?
+        //             null :
+        //             new ImageFormat(new Guid(((GuidAttribute)guidAttribute).Value));
+        //     }
+        // }
 
         /// <summary>
         /// Gets the width and height, in pixels, of this <see cref="FreeImageBitmap"/>.
         /// </summary>
-        public Size Size
-        {
-            get
-            {
-                EnsureNotDisposed();
-                return new Size(Width, Height);
-            }
-        }
+        // public Size Size
+        // {
+        //     get
+        //     {
+        //         EnsureNotDisposed();
+        //         return new Size(Width, Height);
+        //     }
+        // }
 
         /// <summary>
         /// Gets or sets an object that provides additional data about the <see cref="FreeImageBitmap"/>.
@@ -1768,39 +1768,39 @@ namespace FreeImageAPI
         /// the unit of measure for the bounding rectangle.</param>
         /// <returns>The <see cref="System.Drawing.RectangleF"/> that represents the bounds of this
         /// <see cref="FreeImageBitmap"/>, in the specified unit.</returns>
-        public RectangleF GetBounds(ref GraphicsUnit pageUnit)
-        {
-            EnsureNotDisposed();
-            pageUnit = GraphicsUnit.Pixel;
-            return new RectangleF(
-                    0f,
-                    0f,
-                    (float)FreeImage.GetWidth(dib),
-                    (float)FreeImage.GetHeight(dib));
-        }
+        // public RectangleF GetBounds(ref GraphicsUnit pageUnit)
+        // {
+        //     EnsureNotDisposed();
+        //     pageUnit = GraphicsUnit.Pixel;
+        //     return new RectangleF(
+        //             0f,
+        //             0f,
+        //             (float)FreeImage.GetWidth(dib),
+        //             (float)FreeImage.GetHeight(dib));
+        // }
 
         /// <summary>
         /// Gets the specified property item from this <see cref="FreeImageBitmap"/>.
         /// </summary>
         /// <param name="propid">The ID of the property item to get.</param>
         /// <returns>The <see cref="PropertyItem"/> this method gets.</returns>
-        public PropertyItem GetPropertyItem(int propid)
-        {
-            EnsureNotDisposed();
-            ImageMetadata metadata = new ImageMetadata(dib, true);
-            foreach (MetadataModel metadataModel in metadata)
-            {
-                foreach (MetadataTag tag in metadataModel)
-                {
-                    if (tag.ID == propid)
-                    {
-                        return tag.GetPropertyItem();
-                    }
-                }
-            }
+        // public PropertyItem GetPropertyItem(int propid)
+        // {
+        //     EnsureNotDisposed();
+        //     ImageMetadata metadata = new ImageMetadata(dib, true);
+        //     foreach (MetadataModel metadataModel in metadata)
+        //     {
+        //         foreach (MetadataTag tag in metadataModel)
+        //         {
+        //             if (tag.ID == propid)
+        //             {
+        //                 return tag.GetPropertyItem();
+        //             }
+        //         }
+        //     }
 
-            return null;
-        }
+        //     return null;
+        // }
 
         /// <summary>
         /// Returns a thumbnail for this <see cref="FreeImageBitmap"/>.
@@ -1810,20 +1810,20 @@ namespace FreeImageAPI
         /// <param name="callback">Ignored.</param>
         /// <param name="callBackData">Ignored.</param>
         /// <returns>A <see cref="FreeImageBitmap"/> that represents the thumbnail.</returns>
-        public FreeImageBitmap GetThumbnailImage(int thumbWidth, int thumbHeight,
-            Image.GetThumbnailImageAbort callback, IntPtr callBackData)
-        {
-            EnsureNotDisposed();
-            FreeImageBitmap result = null;
-            FIBITMAP newDib = FreeImage.Rescale(
-                dib, thumbWidth, thumbHeight, FREE_IMAGE_FILTER.FILTER_BICUBIC);
-            if (!newDib.IsNull)
-            {
-                result = new FreeImageBitmap(newDib);
-            }
+        // public FreeImageBitmap GetThumbnailImage(int thumbWidth, int thumbHeight,
+        //     Image.GetThumbnailImageAbort callback, IntPtr callBackData)
+        // {
+        //     EnsureNotDisposed();
+        //     FreeImageBitmap result = null;
+        //     FIBITMAP newDib = FreeImage.Rescale(
+        //         dib, thumbWidth, thumbHeight, FREE_IMAGE_FILTER.FILTER_BICUBIC);
+        //     if (!newDib.IsNull)
+        //     {
+        //         result = new FreeImageBitmap(newDib);
+        //     }
 
-            return result;
-        }
+        //     return result;
+        // }
 
         /// <summary>
         /// Returns a thumbnail for this <see cref="FreeImageBitmap"/>, keeping aspect ratio.
@@ -1851,11 +1851,11 @@ namespace FreeImageAPI
         /// Converts this <see cref="FreeImageBitmap"/> instance to a <see cref="Bitmap"/> instance.
         /// </summary>
         /// <returns>A new instance of <see cref="Bitmap"/> initialized this instance.</returns>
-        public Bitmap ToBitmap()
-        {
-            EnsureNotDisposed();
-            return FreeImage.GetBitmap(dib, true);
-        }
+        // public Bitmap ToBitmap()
+        // {
+        //     EnsureNotDisposed();
+        //     return FreeImage.GetBitmap(dib, true);
+        // }
 
         /// <summary>
         /// Returns an instance of <see cref="Scanline&lt;T&gt;"/>, representing the scanline
@@ -2824,30 +2824,30 @@ namespace FreeImageAPI
         /// </summary>
         /// <exception cref="NotImplementedException">
         /// This method is not implemented.</exception>
-        public BitmapData LockBits(Rectangle rect, ImageLockMode flags, PixelFormat format)
-        {
-            throw new NotImplementedException();
-        }
+        // public BitmapData LockBits(Rectangle rect, ImageLockMode flags, PixelFormat format)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         /// <summary>
         /// This function is not yet implemented.
         /// </summary>
         /// <exception cref="NotImplementedException">
         /// This method is not implemented.</exception>
-        public BitmapData LockBits(Rectangle rect, ImageLockMode flags, PixelFormat format, BitmapData bitmapData)
-        {
-            throw new NotImplementedException();
-        }
+        // public BitmapData LockBits(Rectangle rect, ImageLockMode flags, PixelFormat format, BitmapData bitmapData)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         /// <summary>
         /// This function is not yet implemented.
         /// </summary>
         /// <exception cref="NotImplementedException">
         /// This method is not implemented.</exception>
-        public void UnlockBits(BitmapData bitmapdata)
-        {
-            throw new NotImplementedException();
-        }
+        // public void UnlockBits(BitmapData bitmapdata)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         /// <summary>
         /// Converts this <see cref="FreeImageBitmap"/> into a different color depth.
@@ -2948,10 +2948,10 @@ namespace FreeImageAPI
         /// size of the new <see cref="FreeImageBitmap"/>.</param>
         /// <param name="filter">Filter to use for resizing.</param>
         /// <returns>Returns true on success, false on failure.</returns>
-        public bool Rescale(Size newSize, FREE_IMAGE_FILTER filter)
-        {
-            return Rescale(newSize.Width, newSize.Height, filter);
-        }
+        // public bool Rescale(Size newSize, FREE_IMAGE_FILTER filter)
+        // {
+        //     return Rescale(newSize.Width, newSize.Height, filter);
+        // }
 
         /// <summary>
         /// Rescales this <see cref="FreeImageBitmap"/> to the specified size using the
@@ -2975,10 +2975,10 @@ namespace FreeImageAPI
         /// size of the new <see cref="FreeImageBitmap"/>.</param>
         /// <param name="filter">Filter to use for resizing.</param>
         /// <returns>The rescaled instance.</returns>
-        public FreeImageBitmap GetScaledInstance(Size newSize, FREE_IMAGE_FILTER filter)
-        {
-            return GetScaledInstance(newSize.Width, newSize.Height, filter);
-        }
+        // public FreeImageBitmap GetScaledInstance(Size newSize, FREE_IMAGE_FILTER filter)
+        // {
+        //     return GetScaledInstance(newSize.Width, newSize.Height, filter);
+        // }
 
         /// <summary>
         /// Rescales this <see cref="FreeImageBitmap"/> to the specified size using the
@@ -3565,11 +3565,11 @@ namespace FreeImageAPI
         /// </summary>
         /// <param name="rect">The subpart to copy.</param>
         /// <returns>The sub part in a new instance.</returns>
-        public FreeImageBitmap Copy(Rectangle rect)
-        {
-            EnsureNotDisposed();
-            return Copy(rect.Left, rect.Top, rect.Right, rect.Bottom);
-        }
+        // public FreeImageBitmap Copy(Rectangle rect)
+        // {
+        //     EnsureNotDisposed();
+        //     return Copy(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        // }
 
         /// <summary>
         /// Copy a sub part of this <see cref="FreeImageBitmap"/>.
@@ -3620,11 +3620,11 @@ namespace FreeImageAPI
         /// The source and destination images are alpha blended if alpha=0..255.
         /// If alpha > 255, then the source image is combined to the destination image.</param>
         /// <returns>Returns true on success, false on failure.</returns>
-        public bool Paste(FreeImageBitmap bitmap, Point point, int alpha)
-        {
-            EnsureNotDisposed();
-            return Paste(bitmap, point.X, point.Y, alpha);
-        }
+        // public bool Paste(FreeImageBitmap bitmap, Point point, int alpha)
+        // {
+        //     EnsureNotDisposed();
+        //     return Paste(bitmap, point.X, point.Y, alpha);
+        // }
 
         /// <summary>
         /// This method composite a transparent foreground image against a single background color or
@@ -3889,43 +3889,43 @@ namespace FreeImageAPI
         /// </summary>
         /// <param name="pixfmt">The <see cref="System.Drawing.Imaging.PixelFormat"/> to test.</param>
         /// <returns><b>true</b> if pixfmt contains alpha information; otherwise, <b>false</b>.</returns>
-        public static bool IsAlphaPixelFormat(PixelFormat pixfmt)
-        {
-            return Bitmap.IsAlphaPixelFormat(pixfmt);
-        }
+        // public static bool IsAlphaPixelFormat(PixelFormat pixfmt)
+        // {
+        //     return Bitmap.IsAlphaPixelFormat(pixfmt);
+        // }
 
         /// <summary>
         /// Returns a value that indicates whether the pixel format is 32 bits per pixel.
         /// </summary>
         /// <param name="pixfmt">The <see cref="System.Drawing.Imaging.PixelFormat"/> to test.</param>
         /// <returns>true if pixfmt is canonical; otherwise, false.</returns>
-        public static bool IsCanonicalPixelFormat(PixelFormat pixfmt)
-        {
-            return Bitmap.IsCanonicalPixelFormat(pixfmt);
-        }
+        // public static bool IsCanonicalPixelFormat(PixelFormat pixfmt)
+        // {
+        //     return Bitmap.IsCanonicalPixelFormat(pixfmt);
+        // }
 
         /// <summary>
         /// Returns a value that indicates whether the pixel format is 64 bits per pixel.
         /// </summary>
         /// <param name="pixfmt">The <see cref="System.Drawing.Imaging.PixelFormat"/> enumeration to test.</param>
         /// <returns>true if pixfmt is extended; otherwise, false.</returns>
-        public static bool IsExtendedPixelFormat(PixelFormat pixfmt)
-        {
-            return Bitmap.IsExtendedPixelFormat(pixfmt);
-        }
+        // public static bool IsExtendedPixelFormat(PixelFormat pixfmt)
+        // {
+        //     return Bitmap.IsExtendedPixelFormat(pixfmt);
+        // }
 
         /// <summary>
         /// Creates a <see cref="FreeImageBitmap"/> from a Windows handle to an icon.
         /// </summary>
         /// <param name="hicon">A handle to an icon.</param>
         /// <returns>The <see cref="FreeImageBitmap"/> that this method creates.</returns>
-        public static FreeImageBitmap FromHicon(IntPtr hicon)
-        {
-            using (Bitmap bitmap = Bitmap.FromHicon(hicon))
-            {
-                return new FreeImageBitmap(bitmap);
-            }
-        }
+        // public static FreeImageBitmap FromHicon(IntPtr hicon)
+        // {
+        //     using (Bitmap bitmap = Bitmap.FromHicon(hicon))
+        //     {
+        //         return new FreeImageBitmap(bitmap);
+        //     }
+        // }
 
         /// <summary>
         /// Creates a <see cref="FreeImageBitmap"/> from the specified Windows resource.
@@ -3934,13 +3934,13 @@ namespace FreeImageAPI
         /// file that contains the resource.</param>
         /// <param name="bitmapName">A string containing the name of the resource bitmap.</param>
         /// <returns>The <see cref="FreeImageBitmap"/> that this method creates.</returns>
-        public static FreeImageBitmap FromResource(IntPtr hinstance, string bitmapName)
-        {
-            using (Bitmap bitmap = Bitmap.FromResource(hinstance, bitmapName))
-            {
-                return new FreeImageBitmap(bitmap);
-            }
-        }
+        // public static FreeImageBitmap FromResource(IntPtr hinstance, string bitmapName)
+        // {
+        //     using (Bitmap bitmap = Bitmap.FromResource(hinstance, bitmapName))
+        //     {
+        //         return new FreeImageBitmap(bitmap);
+        //     }
+        // }
 
         /// <summary>
         /// Creates a <see cref="FreeImageBitmap"/> from the specified file.
@@ -4048,10 +4048,10 @@ namespace FreeImageAPI
         /// <param name="pixfmt">The <see cref="System.Drawing.Imaging.PixelFormat"/> member that specifies
         /// the format for which to find the size.</param>
         /// <returns>The color depth of the specified pixel format.</returns>
-        public static int GetPixelFormatSize(PixelFormat pixfmt)
-        {
-            return Bitmap.GetPixelFormatSize(pixfmt);
-        }
+        // public static int GetPixelFormatSize(PixelFormat pixfmt)
+        // {
+        //     return Bitmap.GetPixelFormatSize(pixfmt);
+        // }
 
         /// <summary>
         /// Performs a lossless rotation or flipping on a JPEG file.
@@ -4079,25 +4079,25 @@ namespace FreeImageAPI
         /// <exception cref="FileNotFoundException">
         /// <paramref name="source"/> does not exist.
         /// </exception>
-        public static bool JPEGCrop(string source, string destination, Rectangle rect)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
+        // public static bool JPEGCrop(string source, string destination, Rectangle rect)
+        // {
+        //     if (source == null)
+        //     {
+        //         throw new ArgumentNullException("source");
+        //     }
 
-            if (!File.Exists(source))
-            {
-                throw new FileNotFoundException("source");
-            }
+        //     if (!File.Exists(source))
+        //     {
+        //         throw new FileNotFoundException("source");
+        //     }
 
-            if (destination == null)
-            {
-                throw new ArgumentNullException("destination");
-            }
+        //     if (destination == null)
+        //     {
+        //         throw new ArgumentNullException("destination");
+        //     }
 
-            return JPEGCrop(source, destination, rect.Left, rect.Top, rect.Right, rect.Bottom);
-        }
+        //     return JPEGCrop(source, destination, rect.Left, rect.Top, rect.Right, rect.Bottom);
+        // }
 
         /// <summary>
         /// Performs a lossless crop on a JPEG file.
@@ -4356,10 +4356,10 @@ namespace FreeImageAPI
         /// has no public accessible constructor.
         /// </summary>
         /// <returns>A new instace of <see cref="PropertyItem"/>.</returns>
-        public static PropertyItem CreateNewPropertyItem()
-        {
-            return FreeImage.CreatePropertyItem();
-        }
+        // public static PropertyItem CreateNewPropertyItem()
+        // {
+        //     return FreeImage.CreatePropertyItem();
+        // }
 
         #endregion
 

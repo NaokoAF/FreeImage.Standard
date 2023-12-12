@@ -636,15 +636,15 @@ namespace FreeImageAPI.Metadata
         /// Gets a .NET PropertyItem for this metadata tag.
         /// </summary>
         /// <returns>The .NET PropertyItem.</returns>
-        public unsafe System.Drawing.Imaging.PropertyItem GetPropertyItem()
-        {
-            System.Drawing.Imaging.PropertyItem item = FreeImage.CreatePropertyItem();
-            item.Id = ID;
-            item.Len = (int)Length;
-            item.Type = (short)Type;
-            FreeImage.CopyMemory(item.Value = new byte[item.Len], FreeImage.GetTagValue(tag), item.Len);
-            return item;
-        }
+        // public unsafe System.Drawing.Imaging.PropertyItem GetPropertyItem()
+        // {
+        //     System.Drawing.Imaging.PropertyItem item = FreeImage.CreatePropertyItem();
+        //     item.Id = ID;
+        //     item.Len = (int)Length;
+        //     item.Type = (short)Type;
+        //     FreeImage.CopyMemory(item.Value = new byte[item.Len], FreeImage.GetTagValue(tag), item.Len);
+        //     return item;
+        // }
 
         /// <summary>
         /// Converts the value of the <see cref="MetadataTag"/> object

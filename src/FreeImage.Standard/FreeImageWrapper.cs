@@ -36,8 +36,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
+// using System.Drawing;
+// using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -592,10 +592,10 @@ namespace FreeImageAPI
         /// <paramref name="dib"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// The image type of <paramref name="dib"/> is not FIT_BITMAP.</exception>
-        public static Bitmap GetBitmap(FIBITMAP dib)
-        {
-            return GetBitmap(dib, true);
-        }
+        // public static Bitmap GetBitmap(FIBITMAP dib)
+        // {
+        //     return GetBitmap(dib, true);
+        // }
 
         /// <summary>
         /// Converts a FreeImage bitmap to a .NET <see cref="System.Drawing.Bitmap"/>.
@@ -609,140 +609,140 @@ namespace FreeImageAPI
         /// <paramref name="dib"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// The image type of <paramref name="dib"/> is not FIT_BITMAP.</exception>
-        internal static Bitmap GetBitmap(FIBITMAP dib, bool copyMetadata)
-        {
-            if (dib.IsNull)
-            {
-                throw new ArgumentNullException("dib");
-            }
+        // internal static Bitmap GetBitmap(FIBITMAP dib, bool copyMetadata)
+        // {
+        //     if (dib.IsNull)
+        //     {
+        //         throw new ArgumentNullException("dib");
+        //     }
 
-            if (GetImageType(dib) != FREE_IMAGE_TYPE.FIT_BITMAP)
-            {
-                throw new ArgumentException("Only bitmaps with type of FIT_BITMAP can be converted.");
-            }
+        //     if (GetImageType(dib) != FREE_IMAGE_TYPE.FIT_BITMAP)
+        //     {
+        //         throw new ArgumentException("Only bitmaps with type of FIT_BITMAP can be converted.");
+        //     }
 
-            PixelFormat format = GetPixelFormat(dib);
+        //     PixelFormat format = GetPixelFormat(dib);
 
-            if ((format == PixelFormat.Undefined) && (GetBPP(dib) == 16u))
-            {
-                throw new ArgumentException("Only 16bit 555 and 565 are supported.");
-            }
+        //     if ((format == PixelFormat.Undefined) && (GetBPP(dib) == 16u))
+        //     {
+        //         throw new ArgumentException("Only 16bit 555 and 565 are supported.");
+        //     }
 
-            int height = (int)GetHeight(dib);
-            int width = (int)GetWidth(dib);
-            int pitch = (int)GetPitch(dib);
+        //     int height = (int)GetHeight(dib);
+        //     int width = (int)GetWidth(dib);
+        //     int pitch = (int)GetPitch(dib);
 
-            Bitmap result = new Bitmap(width, height, format);
-            BitmapData data;
-            // Locking the complete bitmap in writeonly mode
-            data = result.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, format);
-            // Writing the bitmap data directly into the new created .NET bitmap.
-            ConvertToRawBits(data.Scan0, dib, pitch, GetBPP(dib),
-                GetRedMask(dib), GetGreenMask(dib), GetBlueMask(dib), true);
-            // Unlock the bitmap
-            result.UnlockBits(data);
-            // Apply the bitmap resolution
-            if ((GetResolutionX(dib) > 0) && (GetResolutionY(dib) > 0))
-            {
-                // SetResolution will throw an exception when zero values are given on input 
-                result.SetResolution(GetResolutionX(dib), GetResolutionY(dib));
-            }
+        //     Bitmap result = new Bitmap(width, height, format);
+        //     BitmapData data;
+        //     // Locking the complete bitmap in writeonly mode
+        //     data = result.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, format);
+        //     // Writing the bitmap data directly into the new created .NET bitmap.
+        //     ConvertToRawBits(data.Scan0, dib, pitch, GetBPP(dib),
+        //         GetRedMask(dib), GetGreenMask(dib), GetBlueMask(dib), true);
+        //     // Unlock the bitmap
+        //     result.UnlockBits(data);
+        //     // Apply the bitmap resolution
+        //     if ((GetResolutionX(dib) > 0) && (GetResolutionY(dib) > 0))
+        //     {
+        //         // SetResolution will throw an exception when zero values are given on input 
+        //         result.SetResolution(GetResolutionX(dib), GetResolutionY(dib));
+        //     }
 
-            // Check whether the bitmap has a palette
-            if (GetPalette(dib) != IntPtr.Zero)
-            {
-                // Get the bitmaps palette to apply changes
-                ColorPalette palette = result.Palette;
-                // Get the orgininal palette
-                Color[] colorPalette = new Palette(dib).ColorData;
-                // Get the maximum number of palette entries to copy
-                int entriesToCopy = Math.Min(colorPalette.Length, palette.Entries.Length);
+        //     // Check whether the bitmap has a palette
+        //     if (GetPalette(dib) != IntPtr.Zero)
+        //     {
+        //         // Get the bitmaps palette to apply changes
+        //         ColorPalette palette = result.Palette;
+        //         // Get the orgininal palette
+        //         Color[] colorPalette = new Palette(dib).ColorData;
+        //         // Get the maximum number of palette entries to copy
+        //         int entriesToCopy = Math.Min(colorPalette.Length, palette.Entries.Length);
 
-                // Check whether the bitmap is transparent
-                if (IsTransparent(dib))
-                {
-                    byte[] transTable = GetTransparencyTableEx(dib);
-                    int i = 0;
-                    int maxEntriesWithTrans = Math.Min(entriesToCopy, transTable.Length);
-                    // Copy palette entries and include transparency
-                    for (; i < maxEntriesWithTrans; i++)
-                    {
-                        palette.Entries[i] = Color.FromArgb(transTable[i], colorPalette[i]);
-                    }
+        //         // Check whether the bitmap is transparent
+        //         if (IsTransparent(dib))
+        //         {
+        //             byte[] transTable = GetTransparencyTableEx(dib);
+        //             int i = 0;
+        //             int maxEntriesWithTrans = Math.Min(entriesToCopy, transTable.Length);
+        //             // Copy palette entries and include transparency
+        //             for (; i < maxEntriesWithTrans; i++)
+        //             {
+        //                 palette.Entries[i] = Color.FromArgb(transTable[i], colorPalette[i]);
+        //             }
 
-                    // Copy palette entries and that have no transparancy
-                    for (; i < entriesToCopy; i++)
-                    {
-                        palette.Entries[i] = Color.FromArgb(0xFF, colorPalette[i]);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < entriesToCopy; i++)
-                    {
-                        palette.Entries[i] = colorPalette[i];
-                    }
-                }
+        //             // Copy palette entries and that have no transparancy
+        //             for (; i < entriesToCopy; i++)
+        //             {
+        //                 palette.Entries[i] = Color.FromArgb(0xFF, colorPalette[i]);
+        //             }
+        //         }
+        //         else
+        //         {
+        //             for (int i = 0; i < entriesToCopy; i++)
+        //             {
+        //                 palette.Entries[i] = colorPalette[i];
+        //             }
+        //         }
 
-                // Set the bitmaps palette
-                result.Palette = palette;
-            }
+        //         // Set the bitmaps palette
+        //         result.Palette = palette;
+        //     }
 
-            // Copy metadata
-            if (copyMetadata)
-            {
-                try
-                {
-                    List<PropertyItem> list = new List<PropertyItem>();
-                    // Get a list of all types
-                    FITAG tag;
-                    FIMETADATA mData;
-                    foreach (FREE_IMAGE_MDMODEL model in FREE_IMAGE_MDMODELS)
-                    {
-                        // Get a unique search handle
-                        mData = FindFirstMetadata(model, dib, out tag);
-                        // Check if metadata exists for this type
-                        if (mData.IsNull)
-                        {
-                            continue;
-                        }
+        //     // Copy metadata
+        //     if (copyMetadata)
+        //     {
+        //         try
+        //         {
+        //             List<PropertyItem> list = new List<PropertyItem>();
+        //             // Get a list of all types
+        //             FITAG tag;
+        //             FIMETADATA mData;
+        //             foreach (FREE_IMAGE_MDMODEL model in FREE_IMAGE_MDMODELS)
+        //             {
+        //                 // Get a unique search handle
+        //                 mData = FindFirstMetadata(model, dib, out tag);
+        //                 // Check if metadata exists for this type
+        //                 if (mData.IsNull)
+        //                 {
+        //                     continue;
+        //                 }
 
-                        do
-                        {
-                            PropertyItem propItem = CreatePropertyItem();
-                            propItem.Len = (int)GetTagLength(tag);
-                            propItem.Id = (int)GetTagID(tag);
-                            propItem.Type = (short)GetTagType(tag);
-                            byte[] buffer = new byte[propItem.Len];
+        //                 do
+        //                 {
+        //                     PropertyItem propItem = CreatePropertyItem();
+        //                     propItem.Len = (int)GetTagLength(tag);
+        //                     propItem.Id = (int)GetTagID(tag);
+        //                     propItem.Type = (short)GetTagType(tag);
+        //                     byte[] buffer = new byte[propItem.Len];
 
-                            unsafe
-                            {
-                                byte* src = (byte*)GetTagValue(tag);
-                                fixed (byte* dst = buffer)
-                                {
-                                    CopyMemory(dst, src, (uint)propItem.Len);
-                                }
-                            }
+        //                     unsafe
+        //                     {
+        //                         byte* src = (byte*)GetTagValue(tag);
+        //                         fixed (byte* dst = buffer)
+        //                         {
+        //                             CopyMemory(dst, src, (uint)propItem.Len);
+        //                         }
+        //                     }
 
-                            propItem.Value = buffer;
-                            list.Add(propItem);
-                        }
-                        while (FindNextMetadata(mData, out tag));
-                        FindCloseMetadata(mData);
-                    }
+        //                     propItem.Value = buffer;
+        //                     list.Add(propItem);
+        //                 }
+        //                 while (FindNextMetadata(mData, out tag));
+        //                 FindCloseMetadata(mData);
+        //             }
 
-                    foreach (PropertyItem propItem in list)
-                    {
-                        result.SetPropertyItem(propItem);
-                    }
-                }
-                catch
-                {
-                }
-            }
+        //             foreach (PropertyItem propItem in list)
+        //             {
+        //                 result.SetPropertyItem(propItem);
+        //             }
+        //         }
+        //         catch
+        //         {
+        //         }
+        //     }
 
-            return result;
-        }
+        //     return result;
+        // }
 
         /// <summary>
         /// Converts an .NET <see cref="System.Drawing.Bitmap"/> into a FreeImage bitmap.
@@ -755,10 +755,10 @@ namespace FreeImageAPI
         /// <paramref name="bitmap"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// The bitmaps pixelformat is invalid.</exception>
-        public static FIBITMAP CreateFromBitmap(Bitmap bitmap)
-        {
-            return CreateFromBitmap(bitmap, false);
-        }
+        // public static FIBITMAP CreateFromBitmap(Bitmap bitmap)
+        // {
+        //     return CreateFromBitmap(bitmap, false);
+        // }
 
         /// <summary>
         /// Converts an .NET <see cref="System.Drawing.Bitmap"/> into a FreeImage bitmap.
@@ -772,74 +772,74 @@ namespace FreeImageAPI
         /// <paramref name="bitmap"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// The bitmaps pixelformat is invalid.</exception>
-        internal static FIBITMAP CreateFromBitmap(Bitmap bitmap, bool copyMetadata)
-        {
-            if (bitmap == null)
-            {
-                throw new ArgumentNullException("bitmap");
-            }
+        // internal static FIBITMAP CreateFromBitmap(Bitmap bitmap, bool copyMetadata)
+        // {
+        //     if (bitmap == null)
+        //     {
+        //         throw new ArgumentNullException("bitmap");
+        //     }
 
-            uint bpp, red_mask, green_mask, blue_mask;
-            FREE_IMAGE_TYPE type;
-            if (!GetFormatParameters(bitmap.PixelFormat, out type, out bpp, out red_mask, out green_mask, out blue_mask))
-            {
-                throw new ArgumentException("The bitmaps pixelformat is invalid.");
-            }
+        //     uint bpp, red_mask, green_mask, blue_mask;
+        //     FREE_IMAGE_TYPE type;
+        //     if (!GetFormatParameters(bitmap.PixelFormat, out type, out bpp, out red_mask, out green_mask, out blue_mask))
+        //     {
+        //         throw new ArgumentException("The bitmaps pixelformat is invalid.");
+        //     }
 
-            // Locking the complete bitmap in readonly mode
-            BitmapData data = bitmap.LockBits(
-                new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-            // Copying the bitmap data directly from the .NET bitmap
-            FIBITMAP result = ConvertFromRawBits(
-                data.Scan0,
-                type,
-                data.Width,
-                data.Height,
-                data.Stride,
-                bpp,
-                red_mask,
-                green_mask,
-                blue_mask,
-                true);
-            bitmap.UnlockBits(data);
-            // Handle palette
-            if (GetPalette(result) != IntPtr.Zero)
-            {
-                Palette palette = new Palette(result);
-                Color[] colors = bitmap.Palette.Entries;
-                // Only copy available palette entries
-                int entriesToCopy = Math.Min(palette.Length, colors.Length);
-                byte[] transTable = new byte[entriesToCopy];
-                for (int i = 0; i < entriesToCopy; i++)
-                {
-                    RGBQUAD color = (RGBQUAD)colors[i];
-                    color.rgbReserved = 0x00;
-                    palette[i] = color;
-                    transTable[i] = colors[i].A;
-                }
+        //     // Locking the complete bitmap in readonly mode
+        //     BitmapData data = bitmap.LockBits(
+        //         new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+        //     // Copying the bitmap data directly from the .NET bitmap
+        //     FIBITMAP result = ConvertFromRawBits(
+        //         data.Scan0,
+        //         type,
+        //         data.Width,
+        //         data.Height,
+        //         data.Stride,
+        //         bpp,
+        //         red_mask,
+        //         green_mask,
+        //         blue_mask,
+        //         true);
+        //     bitmap.UnlockBits(data);
+        //     // Handle palette
+        //     if (GetPalette(result) != IntPtr.Zero)
+        //     {
+        //         Palette palette = new Palette(result);
+        //         Color[] colors = bitmap.Palette.Entries;
+        //         // Only copy available palette entries
+        //         int entriesToCopy = Math.Min(palette.Length, colors.Length);
+        //         byte[] transTable = new byte[entriesToCopy];
+        //         for (int i = 0; i < entriesToCopy; i++)
+        //         {
+        //             RGBQUAD color = (RGBQUAD)colors[i];
+        //             color.rgbReserved = 0x00;
+        //             palette[i] = color;
+        //             transTable[i] = colors[i].A;
+        //         }
 
-                if ((bitmap.Flags & (int)ImageFlags.HasAlpha) != 0)
-                {
-                    FreeImage.SetTransparencyTable(result, transTable);
-                }
-            }
+        //         if ((bitmap.Flags & (int)ImageFlags.HasAlpha) != 0)
+        //         {
+        //             FreeImage.SetTransparencyTable(result, transTable);
+        //         }
+        //     }
 
-            // Handle meta data
-            // Disabled
-            //if (copyMetadata)
-            //{
-            //    foreach (PropertyItem propItem in bitmap.PropertyItems)
-            //    {
-            //        FITAG tag = CreateTag();
-            //        SetTagLength(tag, (uint)propItem.Len);
-            //        SetTagID(tag, (ushort)propItem.Id);
-            //        SetTagType(tag, (FREE_IMAGE_MDTYPE)propItem.Type);
-            //        SetTagValue(tag, propItem.Value);
-            //        SetMetadata(FREE_IMAGE_MDMODEL.FIMD_EXIF_EXIF, result, "", tag);
-            //    }
-            //}
-            return result;
-        }
+        //     // Handle meta data
+        //     // Disabled
+        //     //if (copyMetadata)
+        //     //{
+        //     //    foreach (PropertyItem propItem in bitmap.PropertyItems)
+        //     //    {
+        //     //        FITAG tag = CreateTag();
+        //     //        SetTagLength(tag, (uint)propItem.Len);
+        //     //        SetTagID(tag, (ushort)propItem.Id);
+        //     //        SetTagType(tag, (FREE_IMAGE_MDTYPE)propItem.Type);
+        //     //        SetTagValue(tag, propItem.Value);
+        //     //        SetMetadata(FREE_IMAGE_MDMODEL.FIMD_EXIF_EXIF, result, "", tag);
+        //     //    }
+        //     //}
+        //     return result;
+        // }
 
         /// <summary>
         /// Converts a raw bitmap to a FreeImage bitmap.
@@ -959,14 +959,14 @@ namespace FreeImageAPI
         /// <paramref name="bitmap"/> or <paramref name="filename"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// The bitmaps pixelformat is invalid.</exception>
-        public static bool SaveBitmap(Bitmap bitmap, string filename)
-        {
-            return SaveBitmap(
-                bitmap,
-                filename,
-                FREE_IMAGE_FORMAT.FIF_UNKNOWN,
-                FREE_IMAGE_SAVE_FLAGS.DEFAULT);
-        }
+        // public static bool SaveBitmap(Bitmap bitmap, string filename)
+        // {
+        //     return SaveBitmap(
+        //         bitmap,
+        //         filename,
+        //         FREE_IMAGE_FORMAT.FIF_UNKNOWN,
+        //         FREE_IMAGE_SAVE_FLAGS.DEFAULT);
+        // }
 
         /// <summary>
         /// Saves a .NET <see cref="System.Drawing.Bitmap"/> to a file.
@@ -979,14 +979,14 @@ namespace FreeImageAPI
         /// <paramref name="bitmap"/> or <paramref name="filename"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// The bitmaps pixelformat is invalid.</exception>
-        public static bool SaveBitmap(Bitmap bitmap, string filename, FREE_IMAGE_SAVE_FLAGS flags)
-        {
-            return SaveBitmap(
-                bitmap,
-                filename,
-                FREE_IMAGE_FORMAT.FIF_UNKNOWN,
-                flags);
-        }
+        // public static bool SaveBitmap(Bitmap bitmap, string filename, FREE_IMAGE_SAVE_FLAGS flags)
+        // {
+        //     return SaveBitmap(
+        //         bitmap,
+        //         filename,
+        //         FREE_IMAGE_FORMAT.FIF_UNKNOWN,
+        //         flags);
+        // }
 
         /// <summary>
         /// Saves a .NET <see cref="System.Drawing.Bitmap"/> to a file.
@@ -1001,17 +1001,17 @@ namespace FreeImageAPI
         /// <paramref name="bitmap"/> or <paramref name="filename"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// The bitmaps pixelformat is invalid.</exception>
-        public static bool SaveBitmap(
-            Bitmap bitmap,
-            string filename,
-            FREE_IMAGE_FORMAT format,
-            FREE_IMAGE_SAVE_FLAGS flags)
-        {
-            FIBITMAP dib = CreateFromBitmap(bitmap);
-            bool result = SaveEx(dib, filename, format, flags);
-            Unload(dib);
-            return result;
-        }
+        // public static bool SaveBitmap(
+        //     Bitmap bitmap,
+        //     string filename,
+        //     FREE_IMAGE_FORMAT format,
+        //     FREE_IMAGE_SAVE_FLAGS flags)
+        // {
+        //     FIBITMAP dib = CreateFromBitmap(bitmap);
+        //     bool result = SaveEx(dib, filename, format, flags);
+        //     Unload(dib);
+        //     return result;
+        // }
 
         /// <summary>
         /// Loads a FreeImage bitmap.
@@ -1113,13 +1113,13 @@ namespace FreeImageAPI
         /// <paramref name="filename"/> does not exists.</exception>
         /// <exception cref="ArgumentException">
         /// The image type of the image is not <see cref="FREE_IMAGE_TYPE.FIT_BITMAP"/>.</exception>
-        public static Bitmap LoadBitmap(string filename, FREE_IMAGE_LOAD_FLAGS flags, ref FREE_IMAGE_FORMAT format)
-        {
-            FIBITMAP dib = LoadEx(filename, flags, ref format);
-            Bitmap result = GetBitmap(dib, true);
-            Unload(dib);
-            return result;
-        }
+        // public static Bitmap LoadBitmap(string filename, FREE_IMAGE_LOAD_FLAGS flags, ref FREE_IMAGE_FORMAT format)
+        // {
+        //     FIBITMAP dib = LoadEx(filename, flags, ref format);
+        //     Bitmap result = GetBitmap(dib, true);
+        //     Unload(dib);
+        //     return result;
+        // }
 
         /// <summary>
         /// Deletes a previously loaded FreeImage bitmap from memory and resets the handle to 0.
@@ -2519,55 +2519,55 @@ namespace FreeImageAPI
         /// <returns><see cref="System.Drawing.Imaging.PixelFormat"/> of the bitmap.</returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="dib"/> is null.</exception>
-        public static PixelFormat GetPixelFormat(FIBITMAP dib)
-        {
-            if (dib.IsNull)
-            {
-                throw new ArgumentNullException("dib");
-            }
+        // public static PixelFormat GetPixelFormat(FIBITMAP dib)
+        // {
+        //     if (dib.IsNull)
+        //     {
+        //         throw new ArgumentNullException("dib");
+        //     }
 
-            PixelFormat result = PixelFormat.Undefined;
+        //     PixelFormat result = PixelFormat.Undefined;
 
-            if (GetImageType(dib) == FREE_IMAGE_TYPE.FIT_BITMAP)
-            {
-                switch (GetBPP(dib))
-                {
-                    case 1:
-                        result = PixelFormat.Format1bppIndexed;
-                        break;
-                    case 4:
-                        result = PixelFormat.Format4bppIndexed;
-                        break;
-                    case 8:
-                        result = PixelFormat.Format8bppIndexed;
-                        break;
-                    case 16:
-                        if ((GetBlueMask(dib) == FI16_565_BLUE_MASK) &&
-                            (GetGreenMask(dib) == FI16_565_GREEN_MASK) &&
-                            (GetRedMask(dib) == FI16_565_RED_MASK))
-                        {
-                            result = PixelFormat.Format16bppRgb565;
-                        }
+        //     if (GetImageType(dib) == FREE_IMAGE_TYPE.FIT_BITMAP)
+        //     {
+        //         switch (GetBPP(dib))
+        //         {
+        //             case 1:
+        //                 result = PixelFormat.Format1bppIndexed;
+        //                 break;
+        //             case 4:
+        //                 result = PixelFormat.Format4bppIndexed;
+        //                 break;
+        //             case 8:
+        //                 result = PixelFormat.Format8bppIndexed;
+        //                 break;
+        //             case 16:
+        //                 if ((GetBlueMask(dib) == FI16_565_BLUE_MASK) &&
+        //                     (GetGreenMask(dib) == FI16_565_GREEN_MASK) &&
+        //                     (GetRedMask(dib) == FI16_565_RED_MASK))
+        //                 {
+        //                     result = PixelFormat.Format16bppRgb565;
+        //                 }
 
-                        if ((GetBlueMask(dib) == FI16_555_BLUE_MASK) &&
-                            (GetGreenMask(dib) == FI16_555_GREEN_MASK) &&
-                            (GetRedMask(dib) == FI16_555_RED_MASK))
-                        {
-                            result = PixelFormat.Format16bppRgb555;
-                        }
+        //                 if ((GetBlueMask(dib) == FI16_555_BLUE_MASK) &&
+        //                     (GetGreenMask(dib) == FI16_555_GREEN_MASK) &&
+        //                     (GetRedMask(dib) == FI16_555_RED_MASK))
+        //                 {
+        //                     result = PixelFormat.Format16bppRgb555;
+        //                 }
 
-                        break;
-                    case 24:
-                        result = PixelFormat.Format24bppRgb;
-                        break;
-                    case 32:
-                        result = PixelFormat.Format32bppArgb;
-                        break;
-                }
-            }
+        //                 break;
+        //             case 24:
+        //                 result = PixelFormat.Format24bppRgb;
+        //                 break;
+        //             case 32:
+        //                 result = PixelFormat.Format32bppArgb;
+        //                 break;
+        //         }
+        //     }
 
-            return result;
-        }
+        //     return result;
+        // }
 
         /// <summary>
         /// Retrieves all parameters needed to create a new FreeImage bitmap from
@@ -2582,92 +2582,92 @@ namespace FreeImageAPI
         /// <param name="blue_mask">Returns the blue_mask for the new bitmap.</param>
         /// <returns>True in case a matching conversion exists; else false.
         /// </returns>
-        public static bool GetFormatParameters(
-            PixelFormat format,
-            out FREE_IMAGE_TYPE type,
-            out uint bpp,
-            out uint red_mask,
-            out uint green_mask,
-            out uint blue_mask)
-        {
-            bool result = false;
-            type = FREE_IMAGE_TYPE.FIT_UNKNOWN;
-            bpp = 0;
-            red_mask = 0;
-            green_mask = 0;
-            blue_mask = 0;
-            switch (format)
-            {
-                case PixelFormat.Format1bppIndexed:
-                    type = FREE_IMAGE_TYPE.FIT_BITMAP;
-                    bpp = 1;
-                    result = true;
-                    break;
-                case PixelFormat.Format4bppIndexed:
-                    type = FREE_IMAGE_TYPE.FIT_BITMAP;
-                    bpp = 4;
-                    result = true;
-                    break;
-                case PixelFormat.Format8bppIndexed:
-                    type = FREE_IMAGE_TYPE.FIT_BITMAP;
-                    bpp = 8;
-                    result = true;
-                    break;
-                case PixelFormat.Format16bppRgb565:
-                    type = FREE_IMAGE_TYPE.FIT_BITMAP;
-                    bpp = 16;
-                    red_mask = FI16_565_RED_MASK;
-                    green_mask = FI16_565_GREEN_MASK;
-                    blue_mask = FI16_565_BLUE_MASK;
-                    result = true;
-                    break;
-                case PixelFormat.Format16bppRgb555:
-                case PixelFormat.Format16bppArgb1555:
-                    type = FREE_IMAGE_TYPE.FIT_BITMAP;
-                    bpp = 16;
-                    red_mask = FI16_555_RED_MASK;
-                    green_mask = FI16_555_GREEN_MASK;
-                    blue_mask = FI16_555_BLUE_MASK;
-                    result = true;
-                    break;
-                case PixelFormat.Format24bppRgb:
-                    type = FREE_IMAGE_TYPE.FIT_BITMAP;
-                    bpp = 24;
-                    red_mask = FI_RGBA_RED_MASK;
-                    green_mask = FI_RGBA_GREEN_MASK;
-                    blue_mask = FI_RGBA_BLUE_MASK;
-                    result = true;
-                    break;
-                case PixelFormat.Format32bppRgb:
-                case PixelFormat.Format32bppArgb:
-                case PixelFormat.Format32bppPArgb:
-                    type = FREE_IMAGE_TYPE.FIT_BITMAP;
-                    bpp = 32;
-                    red_mask = FI_RGBA_RED_MASK;
-                    green_mask = FI_RGBA_GREEN_MASK;
-                    blue_mask = FI_RGBA_BLUE_MASK;
-                    result = true;
-                    break;
-                case PixelFormat.Format16bppGrayScale:
-                    type = FREE_IMAGE_TYPE.FIT_UINT16;
-                    bpp = 16;
-                    result = true;
-                    break;
-                case PixelFormat.Format48bppRgb:
-                    type = FREE_IMAGE_TYPE.FIT_RGB16;
-                    bpp = 48;
-                    result = true;
-                    break;
-                case PixelFormat.Format64bppArgb:
-                case PixelFormat.Format64bppPArgb:
-                    type = FREE_IMAGE_TYPE.FIT_RGBA16;
-                    bpp = 64;
-                    result = true;
-                    break;
-            }
+        // public static bool GetFormatParameters(
+        //     PixelFormat format,
+        //     out FREE_IMAGE_TYPE type,
+        //     out uint bpp,
+        //     out uint red_mask,
+        //     out uint green_mask,
+        //     out uint blue_mask)
+        // {
+        //     bool result = false;
+        //     type = FREE_IMAGE_TYPE.FIT_UNKNOWN;
+        //     bpp = 0;
+        //     red_mask = 0;
+        //     green_mask = 0;
+        //     blue_mask = 0;
+        //     switch (format)
+        //     {
+        //         case PixelFormat.Format1bppIndexed:
+        //             type = FREE_IMAGE_TYPE.FIT_BITMAP;
+        //             bpp = 1;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format4bppIndexed:
+        //             type = FREE_IMAGE_TYPE.FIT_BITMAP;
+        //             bpp = 4;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format8bppIndexed:
+        //             type = FREE_IMAGE_TYPE.FIT_BITMAP;
+        //             bpp = 8;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format16bppRgb565:
+        //             type = FREE_IMAGE_TYPE.FIT_BITMAP;
+        //             bpp = 16;
+        //             red_mask = FI16_565_RED_MASK;
+        //             green_mask = FI16_565_GREEN_MASK;
+        //             blue_mask = FI16_565_BLUE_MASK;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format16bppRgb555:
+        //         case PixelFormat.Format16bppArgb1555:
+        //             type = FREE_IMAGE_TYPE.FIT_BITMAP;
+        //             bpp = 16;
+        //             red_mask = FI16_555_RED_MASK;
+        //             green_mask = FI16_555_GREEN_MASK;
+        //             blue_mask = FI16_555_BLUE_MASK;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format24bppRgb:
+        //             type = FREE_IMAGE_TYPE.FIT_BITMAP;
+        //             bpp = 24;
+        //             red_mask = FI_RGBA_RED_MASK;
+        //             green_mask = FI_RGBA_GREEN_MASK;
+        //             blue_mask = FI_RGBA_BLUE_MASK;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format32bppRgb:
+        //         case PixelFormat.Format32bppArgb:
+        //         case PixelFormat.Format32bppPArgb:
+        //             type = FREE_IMAGE_TYPE.FIT_BITMAP;
+        //             bpp = 32;
+        //             red_mask = FI_RGBA_RED_MASK;
+        //             green_mask = FI_RGBA_GREEN_MASK;
+        //             blue_mask = FI_RGBA_BLUE_MASK;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format16bppGrayScale:
+        //             type = FREE_IMAGE_TYPE.FIT_UINT16;
+        //             bpp = 16;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format48bppRgb:
+        //             type = FREE_IMAGE_TYPE.FIT_RGB16;
+        //             bpp = 48;
+        //             result = true;
+        //             break;
+        //         case PixelFormat.Format64bppArgb:
+        //         case PixelFormat.Format64bppPArgb:
+        //             type = FREE_IMAGE_TYPE.FIT_RGBA16;
+        //             bpp = 64;
+        //             result = true;
+        //             break;
+        //     }
 
-            return result;
-        }
+        //     return result;
+        // }
 
         /// <summary>
         /// Returns the <see cref="FREE_IMAGE_FORMAT"/> for the specified
@@ -2677,43 +2677,43 @@ namespace FreeImageAPI
         /// for which to return the corresponding <see cref="FREE_IMAGE_FORMAT"/>.</param>
         /// <returns>The <see cref="FREE_IMAGE_FORMAT"/> for the specified
         /// <see cref="ImageFormat"/></returns>
-        public static FREE_IMAGE_FORMAT GetFormat(ImageFormat imageFormat)
-        {
-            if (imageFormat != null)
-            {
-                if (imageFormat.Equals(ImageFormat.Bmp))
-                {
-                    return FREE_IMAGE_FORMAT.FIF_BMP;
-                }
+        // public static FREE_IMAGE_FORMAT GetFormat(ImageFormat imageFormat)
+        // {
+        //     if (imageFormat != null)
+        //     {
+        //         if (imageFormat.Equals(ImageFormat.Bmp))
+        //         {
+        //             return FREE_IMAGE_FORMAT.FIF_BMP;
+        //         }
 
-                if (imageFormat.Equals(ImageFormat.Gif))
-                {
-                    return FREE_IMAGE_FORMAT.FIF_GIF;
-                }
+        //         if (imageFormat.Equals(ImageFormat.Gif))
+        //         {
+        //             return FREE_IMAGE_FORMAT.FIF_GIF;
+        //         }
 
-                if (imageFormat.Equals(ImageFormat.Icon))
-                {
-                    return FREE_IMAGE_FORMAT.FIF_ICO;
-                }
+        //         if (imageFormat.Equals(ImageFormat.Icon))
+        //         {
+        //             return FREE_IMAGE_FORMAT.FIF_ICO;
+        //         }
 
-                if (imageFormat.Equals(ImageFormat.Jpeg))
-                {
-                    return FREE_IMAGE_FORMAT.FIF_JPEG;
-                }
+        //         if (imageFormat.Equals(ImageFormat.Jpeg))
+        //         {
+        //             return FREE_IMAGE_FORMAT.FIF_JPEG;
+        //         }
 
-                if (imageFormat.Equals(ImageFormat.Png))
-                {
-                    return FREE_IMAGE_FORMAT.FIF_PNG;
-                }
+        //         if (imageFormat.Equals(ImageFormat.Png))
+        //         {
+        //             return FREE_IMAGE_FORMAT.FIF_PNG;
+        //         }
 
-                if (imageFormat.Equals(ImageFormat.Tiff))
-                {
-                    return FREE_IMAGE_FORMAT.FIF_TIFF;
-                }
-            }
+        //         if (imageFormat.Equals(ImageFormat.Tiff))
+        //         {
+        //             return FREE_IMAGE_FORMAT.FIF_TIFF;
+        //         }
+        //     }
 
-            return FREE_IMAGE_FORMAT.FIF_UNKNOWN;
-        }
+        //     return FREE_IMAGE_FORMAT.FIF_UNKNOWN;
+        // }
 
         /// <summary>
         /// Retrieves all parameters needed to create a new FreeImage bitmap from
@@ -4719,10 +4719,10 @@ namespace FreeImageAPI
             return result;
         }
 
-        internal static PropertyItem CreatePropertyItem()
-        {
-            return (PropertyItem)Activator.CreateInstance(typeof(PropertyItem), true);
-        }
+        // internal static PropertyItem CreatePropertyItem()
+        // {
+        //     return (PropertyItem)Activator.CreateInstance(typeof(PropertyItem), true);
+        // }
 
         private static unsafe void CopyPalette(FIBITMAP src, FIBITMAP dst)
         {
@@ -5130,7 +5130,7 @@ namespace FreeImageAPI
             return string.Format(
                 System.Globalization.CultureInfo.CurrentCulture,
                 "{{Name={0}, ARGB=({1}, {2}, {3}, {4})}}",
-                new object[] { color.Name, color.A, color.R, color.G, color.B });
+                new object[] { null, color.A, color.R, color.G, color.B });
         }
 
         internal static void Resize(ref string str, int length)
